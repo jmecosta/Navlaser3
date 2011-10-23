@@ -33,11 +33,11 @@
 #include <boost/ptr_container/ptr_list.hpp>
 #include <boost/shared_ptr.hpp>
 
-#include "../features/feature_c.h"
-#include "../features/point_t.h"
-#include "../features/line_t.h"
-#include "../features/features_extractor_t.h"
-#include "../config/config_map.h"
+#include "feature_c.h"
+#include "point_t.h"
+#include "line_t.h"
+#include "features_extractor_t.h"
+#include "config_map.h"
 
 using namespace std;
 

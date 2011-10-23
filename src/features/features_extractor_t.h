@@ -36,11 +36,11 @@
 #include <vector>
 #include <math.h>
 
-#include "../sensors/laser_t.h"
-#include "../math/math_lib.h"
+#include "laser_t.h"
+#include "math_lib.h"
 #include "line_t.h"
 #include "point_t.h"
-#include "../config/config_extractor.h"
+#include "config_extractor.h"
 
 using namespace std;
 

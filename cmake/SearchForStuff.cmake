@@ -67,21 +67,6 @@ if (PKG_CONFIG_FOUND)
     MESSAGE (STATUS "GSL FOUND")
   endif (NOT GSL_FOUND)  
 
-  # find QT stuff
-  #message (STATUS "TRACE: QT TO FIND")
-  #pkg_check_modules(QTCORE QtCore>=4.0.0)
-  #if (NOT QTCORE_FOUND)
-  #  set (INCLUDE_QTCORE OFF CACHE BOOL "Set QtCore Libs" FORCE)
-  #  message (STATUS "Warning: QtCore not found. ${navlaserplayer} will not be built. See the following website: http://www.qt-throltech.com")
-  #else (NOT QTCORE_FOUND)
-  #  set (INCLUDE_QTCORE ON CACHE BOOL "Set qtcore Libs" FORCE)
-  #  set (QTCORE_INCLUDE_DIRS ${QTCORE_INCLUDE_DIRS} CACHE INTERNAL "qtcore include directory")
-  #  set (QTCORE_LINK_DIRS ${QTCORE_LIBRARY_DIRS} CACHE INTERNAL "qtcore link directory")
-  #  set (QTCORE_LINK_LIBS ${QTCORE_LIBRARIES} CACHE INTERNAL "qtcore libraries")
-  #  MESSAGE (STATUS "QTCORE FOUND" QTCORE_LINK_LIBS)
-  #endif (NOT QTCORE_FOUND)  
-
-	 
   ## GTK2 needed
   pkg_check_modules(GTK REQUIRED gtk+-2.0>=2.0.0)
   if (NOT GTK_FOUND)
@@ -98,6 +83,20 @@ if (PKG_CONFIG_FOUND)
   message("GTK INCLUDE DIRS: " ${GTK_INCLUDE_DIRS} )
   message("GTK PKG LIB DIR: " ${GTK_LIBRARY_DIRS} )
   message("GTK PKG LIB: " ${GTK_LIBRARIES} )
+
+
+  ## GTK2 needed
+  pkg_check_modules(OIS REQUIRED OIS>=1.3.0)
+  if (NOT OIS_FOUND)
+    set (INCLUDE_OIS OFF CACHE BOOL "SET OIS FORCE" FORCE)
+    message (STATUS "Warning: OIS not found. ${navlaserplayer} will not be built. See the following website: TBC")
+  else (NOT OIS_FOUND)
+    set (INCLUDE_OIS ON CACHE BOOL "Set OIS Libs" FORCE)
+    set (OIS_INCLUDE_DIRS ${OIS_INCLUDE_DIRS} CACHE INTERNAL "OIS include directory")
+    set (OIS_LINK_DIRS ${OIS_LIBRARY_DIRS} CACHE INTERNAL "OIS link directory")
+    set (OIS_LINK_LIBS ${OIS_LIBRARIES} CACHE INTERNAL "OIS libraries")
+    MESSAGE (STATUS "OIS FOUND")
+  endif (NOT OIS_FOUND)
 
 else (PKG_CONFIG_FOUND)
   set (BUILD_NAVLASERPLAYER OFF CACHE INTERNAL "Build Navlaserplayer" FORCE)
@@ -182,4 +181,21 @@ IF (libtool_library AND libtool_include_dir)
 ENDIF (libtool_library AND libtool_include_dir)
 
 
+
+########################################
+
+# Set hardcoded path guesses for various platforms
+if (UNIX)
+  set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} /usr/local /usr/local/lib/OGRE/cmake)
+  set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} /usr/lib/OGRE/cmake)
+endif ()
+
+########################################
+# Find OGRE
+find_package(OGRE REQUIRED)
+
+#### SET QT
+# find QT stuff - QTcore
+# find and setup Qt4 for this project
+FIND_PACKAGE(Qt4 REQUIRED)
 

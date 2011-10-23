@@ -39,7 +39,7 @@
 #include <iostream>
 #include <math.h>
 #include "laser_t.h"
-#include "../rtk2/mainwnd.h"
+#include "mainwnd.h"
 
 #ifdef USEGAZEBO
 using namespace libgazebo;

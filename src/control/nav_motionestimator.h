@@ -40,12 +40,12 @@
 #include <libplayerc/playerc.h>
 #endif
 
-#include "../defs.h"
-#include "../sensors/lmsscan_t.h"
-#include "../map/features_map_t.h"
-#include "../map/grid_map_t.h"
-#include "../math/math_lib.h"
-#include "../config/config_movement.h"
+#include "defs.h"
+#include "lmsscan_t.h"
+#include "features_map_t.h"
+#include "grid_map_t.h"
+#include "math_lib.h"
+#include "config_movement.h"
 
 using namespace std;
 using namespace boost;

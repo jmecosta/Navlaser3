@@ -27,7 +27,7 @@
  */
 
 #include "line_t.h"
-#include "../math/math_lib.h"
+#include "math_lib.h"
 
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_matrix.h>

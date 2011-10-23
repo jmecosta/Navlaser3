@@ -26,7 +26,7 @@
 
  */
 #include "nav_motionestimator.h"
-#include "../math/math_lib.h"
+#include "math_lib.h"
 
 Nav_MotionEstimator::Nav_MotionEstimator(int modeltoUse, string dev)
 {

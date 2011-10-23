@@ -30,7 +30,7 @@
 #define LINE_T_H
 
 #include "feature_c.h"
-#include "../defs.h"
+#include "defs.h"
 
 class line_t : public feature_t
 {
