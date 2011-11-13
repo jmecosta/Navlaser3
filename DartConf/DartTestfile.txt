@@ -1,0 +1,4 @@
+SUBDIRS(test/math)
+
+ADD_TEST(SimpleTest test/math/SimpleTest Hello)
+ADD_TEST(testTkInter "/usr/bin/python" "-c" "import Tkinter")

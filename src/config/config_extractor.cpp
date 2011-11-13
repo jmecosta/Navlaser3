@@ -44,7 +44,7 @@ bool config_extractor::setCornerEstimationMethod(int method,
 {
 	CornerEstimationMethod = method;
 
-	if (method == CORNERRAMSAC)
+        if (method == CORNERRAMSAC)
 		RANSAC_FACTOR = optional;
 
 	return true;

@@ -40,13 +40,19 @@ void THIS::init( std::string plugins_file,
 #endif
 
     initialised = false;
+    FirstC = false;
+
+    // mouse coordinatest
+    MousePose.ZERO;
+    MousePosePrev.ZERO;
+
+    // camera initialization
+    CamOri.setOrigin(Ogre::Vector3(0,200,200));
+    CamOri.setDirection(Ogre::Vector3(0,0,0));
 
     cout << "<TRACE><LOG><SceneManager><init> Constructor" << endl;
     if (!setup())
         return;
-
-
-
 }
 
 //-------------------------------------------------------------------------------------
@@ -97,49 +103,6 @@ bool THIS::configure(void)
     mRoot->initialise(false); // don't create a window
 
 }
-void THIS::createFrameListener(void)
-{
-    Ogre::LogManager::getSingletonPtr()->logMessage("*** Initializing OIS ***");
-    OIS::ParamList pl;
-    size_t windowHnd = 0;
-    std::ostringstream windowHndStr;
-
-    mWindow->getCustomAttribute("WINDOW", &windowHnd);
-    windowHndStr << windowHnd;
-    pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
-
-    mInputManager = OIS::InputManager::createInputSystem( pl );
-
-    mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, true ));
-    mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, true ));
-
-    mMouse->setEventCallback(this);
-    mKeyboard->setEventCallback(this);
-
-    //Set initial mouse clipping size
-    windowResized(mWindow);
-
-    //Register as a Window listener
-    Ogre::WindowEventUtilities::addWindowEventListener(mWindow, this);
-
-    // create a params panel for displaying sample details
-    Ogre::StringVector items;
-    items.push_back("cam.pX");
-    items.push_back("cam.pY");
-    items.push_back("cam.pZ");
-    items.push_back("");
-    items.push_back("cam.oW");
-    items.push_back("cam.oX");
-    items.push_back("cam.oY");
-    items.push_back("cam.oZ");
-    items.push_back("");
-    items.push_back("Filtering");
-    items.push_back("Poly Mode");
-
-    mRoot->addFrameListener(this);
-
-    Ogre::LogManager::getSingletonPtr()->logMessage("*** INIT OIS END ***");
-}
 //-------------------------------------------------------------------------------------
 void THIS::chooseSceneManager(void)
 {
@@ -156,10 +119,22 @@ void THIS::createCamera(void)
     mCamera = mSceneMgr->createCamera("PlayerCam");
 
     // Position it at 500 in Z direction
-    mCamera->setPosition(Ogre::Vector3(0,0,80));
+    mCamera->setPosition(CamOri.getOrigin());
     // Look back along -Z
-    mCamera->lookAt(Ogre::Vector3(0,0,-300));
+    mCamera->lookAt(CamOri.getDirection());
     mCamera->setNearClipDistance(5);
+
+    // Populate the camera container
+    mCamNode = mCamera->getParentSceneNode();
+    assert(mCamera);
+    //assert(mCamNode);
+    // set the rotation and move speed
+    mRotate = 0.13;
+    mMove = 250;
+
+    // setup the initial mouse movement plane
+    CamObsPlane = new Ogre::Plane(CamOri.getDirection(),100);
+
 }
 //-------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------
@@ -292,20 +267,7 @@ void THIS::initializeOgre()
     createCamera();
     createViewports();
 
-
-    Ogre::Entity *ent = mSceneMgr->createEntity("Robot", "robot.mesh");
-    Ogre::SceneNode *node = mSceneMgr->getRootSceneNode()->createChildSceneNode("RobotNode");
-    node->attachObject(ent);
-
-
     createScene ();
-
-    mAnimState = ent->getAnimationState("Walk");
-    mAnimState->setEnabled(true);
-    mAnimState->setLoop(true);
-
-    createFrameListener();
-
     startTimer(5);
 
 }
@@ -386,8 +348,6 @@ void THIS::glDraw()
     }
 
 }
-
-
 void THIS::resizeEvent(QResizeEvent *e)
 {
 #if !PARENT_HANDLE
@@ -400,141 +360,43 @@ void THIS::resizeEvent(QResizeEvent *e)
     }
     resizeGL(width(), height());
 }
-bool THIS::frameRenderingQueued(const Ogre::FrameEvent& evt)
-{
-    if(mWindow->isClosed())
-        return false;
-
-    if(mShutDown)
-        return false;
-
-    //Need to capture/update each device
-    mKeyboard->capture();
-    mMouse->capture();
-
-    return true;
-}
 //-------------------------------------------------------------------------------------
-bool THIS::keyPressed( const OIS::KeyEvent &arg )
-{
-    Ogre::String newVal;
-    Ogre::TextureFilterOptions tfo;
-    unsigned int aniso;
-    cout << "<TRACE><LOG><SceneManager><keyPressed>  " << endl;
-    if (arg.key == OIS::KC_F)   // toggle visibility of advanced frame stats
-    {
-        newVal = "Trilinear";
-        tfo = Ogre::TFO_TRILINEAR;
-        aniso = 1;
-        Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(tfo);
-        Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(aniso);
-    }
-    else if (arg.key == OIS::KC_G)   // toggle visibility of even rarer debugging details
-    {
-        newVal = "Anisotropic";
-        tfo = Ogre::TFO_ANISOTROPIC;
-        aniso = 8;
-        Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(tfo);
-        Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(aniso);
-    }
-    else if (arg.key == OIS::KC_T)   // cycle polygon rendering mode
-    {
+// mouse functions
+void THIS::mouseMoveEvent(QMouseEvent *event) {
+    cout << "Mouse" << event->buttons() << event->x() << " " << event->y() << endl;
+
+    // mormalize position of the mouse
+    int x = event->x() - width() / 2;
+    int y = event->y() - height() / 2;
+
+    // find the parallel line t
+
+    cout << "Mouse "  << x << " " << y << endl;
+
+    //assert(mCamNode);
+    //mCamNode->yaw(Ogre::Degree(-mRotate * event->x()), Ogre::Node::TS_WORLD);
+    //mCamNode->pitch(Ogre::Degree(-mRotate * event->y()), Ogre::Node::TS_LOCAL);
 
 
-            newVal = "None";
-            tfo = Ogre::TFO_NONE;
-            aniso = 1;
-
-        Ogre::MaterialManager::getSingleton().setDefaultTextureFiltering(tfo);
-        Ogre::MaterialManager::getSingleton().setDefaultAnisotropy(aniso);
-    }
-    else if (arg.key == OIS::KC_R)   // cycle polygon rendering mode
-    {
-        Ogre::String newVal;
-        Ogre::PolygonMode pm;
-
-        switch (mCamera->getPolygonMode())
-        {
-        case Ogre::PM_SOLID:
-            newVal = "Wireframe";
-            pm = Ogre::PM_WIREFRAME;
-            break;
-        case Ogre::PM_WIREFRAME:
-            newVal = "Points";
-            pm = Ogre::PM_POINTS;
-            break;
-        default:
-            newVal = "Solid";
-            pm = Ogre::PM_SOLID;
-        }
-
-        mCamera->setPolygonMode(pm);
-    }
-    else if(arg.key == OIS::KC_F5)   // refresh all textures
-    {
-        Ogre::TextureManager::getSingleton().reloadAll();
-    }
-    else if (arg.key == OIS::KC_SYSRQ)   // take a screenshot
-    {
-        mWindow->writeContentsToTimestampedFile("screenshot", ".jpg");
-    }
-    else if (arg.key == OIS::KC_ESCAPE)
-    {
-        mShutDown = true;
-    }
+    if ( event->buttons() == Qt::LeftButton && FirstC ) {
 
 
-    return true;
+        MousePose = Ogre::Vector2(event->x(),event->y());
+
+        // project the x,y coordinates of the mouse into the camera movement plane
+        //CamObsPlane
+
+        // Position it at 500 in Z direction
+        mCamera->setPosition(CamOri.getOrigin());
+        // Look back along -Z
+        mCamera->lookAt(CamOri.getDirection());
+    }
+
+    FirstC = true;
+    MousePosePrev = MousePose;
 }
+void THIS::wheelEvent (QWheelEvent * event) {
+    // Zoom function on camera
+    cout << "wheel" << event->buttons()<< endl;
 
-bool THIS::keyReleased( const OIS::KeyEvent &arg )
-{
-
-    return true;
-}
-
-bool THIS::mouseMoved( const OIS::MouseEvent &arg )
-{
-
-    return true;
-}
-
-bool THIS::mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
-{
-        Ogre::LogManager::getSingletonPtr()->logMessage("*** Mouse Pressed ***");
-    return true;
-}
-
-bool THIS::mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
-{
-    return true;
-}
-
-//Adjust mouse clipping area
-void THIS::windowResized(Ogre::RenderWindow* rw)
-{
-    unsigned int width, height, depth;
-    int left, top;
-    rw->getMetrics(width, height, depth, left, top);
-
-    const OIS::MouseState &ms = mMouse->getMouseState();
-    ms.width = width;
-    ms.height = height;
-}
-
-//Unattach OIS before window shutdown (very important under Linux)
-void THIS::windowClosed(Ogre::RenderWindow* rw)
-{
-    //Only close for window that created OIS (the main window in these demos)
-    if( rw == mWindow )
-    {
-        if( mInputManager )
-        {
-            mInputManager->destroyInputObject( mMouse );
-            mInputManager->destroyInputObject( mKeyboard );
-
-            OIS::InputManager::destroyInputSystem(mInputManager);
-            mInputManager = 0;
-        }
-    }
 }

@@ -20,8 +20,10 @@
 #ifndef SCENE_MANAGER_H
 #define SCENE_MANAGER_H
 
-#include <OGRE/Ogre.h>
+#include <Ogre.h>
 #include <QGLWidget>
+#include <QMouseEvent>
+#include <QWheelEvent>
 #include <QX11Info>
 
 #include <OgreCamera.h>
@@ -33,12 +35,7 @@
 #include <OgreRenderWindow.h>
 #include <OgreConfigFile.h>
 
-#include <OISEvents.h>
-#include <OISInputManager.h>
-#include <OISKeyboard.h>
-#include <OISMouse.h>
-
-class Scene_Manager : public Ogre::FrameListener, public Ogre::WindowEventListener, public QGLWidget, public OIS::KeyListener, public OIS::MouseListener
+class Scene_Manager : public Ogre::WindowEventListener, public QGLWidget
 {
 public:
     Scene_Manager( QWidget *parent=0 ):
@@ -60,24 +57,20 @@ public:
         Ogre::WindowEventUtilities::removeWindowEventListener(mWindow, this);
         windowClosed(mWindow);
         delete mRoot;
-
     }
 
 protected:
-    // qglwidget re-implemented methods
+    // qglwidget re-implemented methods - OPENGL
     virtual void initializeGL();
     virtual void resizeGL( int, int );
     virtual void paintGL();
+    void glDraw();
 
     void init( std::string, std::string, std::string );
-
     void initializeOgre();
-    void glDraw();
     void timerEvent(QTimerEvent *);
     void resizeEvent(QResizeEvent *e);
 
-
-    bool initialised;
 
     virtual bool setup();
     virtual bool configure(void);
@@ -89,7 +82,8 @@ protected:
     virtual void setupResources(void);
     virtual void createResourceListener(void);
     virtual void loadResources(void);
-    virtual void createFrameListener(void);
+
+    bool initialised;
 
     Ogre::Root *mRoot;
     Ogre::Camera* mCamera;
@@ -106,28 +100,23 @@ protected:
     bool mCursorWasVisible;                    // was cursor visible before dialog appeared
     bool mShutDown;
 
-    //OIS Input devices
-    OIS::InputManager* mInputManager;
-    OIS::Mouse*    mMouse;
-    OIS::Keyboard* mKeyboard;
+    //qglviewer mouse and keyboard
+    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void wheelEvent (QWheelEvent * event);
+    Ogre::Real mRotate;          // The rotate constant
+    Ogre::Real mMove;            // The movement constant
 
+    Ogre::SceneNode *mCamNode;   // The SceneNode the camera is currently attached to
+    Ogre::Ray CamOri;
 
-    // Ogre::FrameListener
-    virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    // mouse coordinatest
+    Ogre::Vector2 MousePose;
+    Ogre::Vector2 MousePosePrev;
 
-    // OIS::KeyListener
-    virtual bool keyPressed( const OIS::KeyEvent &arg );
-    virtual bool keyReleased( const OIS::KeyEvent &arg );
-    // OIS::MouseListener
-    virtual bool mouseMoved( const OIS::MouseEvent &arg );
-    virtual bool mousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id );
-    virtual bool mouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id );
+    // movement plane
+    Ogre::Plane * CamObsPlane;
 
-    // Ogre::WindowEventListener
-    //Adjust mouse clipping area
-    virtual void windowResized(Ogre::RenderWindow* rw);
-    //Unattach OIS before window shutdown (very important under Linux)
-    virtual void windowClosed(Ogre::RenderWindow* rw);
+    bool FirstC;
 
 };
 
