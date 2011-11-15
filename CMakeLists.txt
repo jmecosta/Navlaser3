@@ -147,11 +147,12 @@ TARGET_LINK_LIBRARIES(navlaserplayer  ${NAVLASER3_LINK_LIBS})
 ####
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR})
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/test)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/test/common)
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/test/config)
 INCLUDE_DIRECTORIES(${CPPUNIT_INCLUDE_DIRS})
 
 #### define SRC files for project specific unit tests
-set(NAVLASER3_CONFIG_TESTS_SRC
+set(NAVLASER3_CONFIG_TESTS_SRC ${PROJECT_SOURCE_DIR}/test/common/myxmloutputterhook.cpp
         ${PROJECT_SOURCE_DIR}/test/config/config_extractorTest.cpp
         ${PROJECT_SOURCE_DIR}/src/config/config_extractor.cpp
         ${PROJECT_SOURCE_DIR}/test/config/main.cpp )
