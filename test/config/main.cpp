@@ -5,29 +5,38 @@
 #include <cppunit/TestResult.h>
 #include <cppunit/TestResultCollector.h>
 #include <cppunit/TestRunner.h>
+#include <cppunit/XmlOutputter.h>
+#include <cppunit/XmlOutputterHook.h>
+
 
 #include "config_extractorTest.h"
+#include "myxmloutputterhook.h"
 
 using namespace std;
 
 int main(int argc, char **argv) {
-
+    
     CPPUNIT_NS::TestSuite suite;
-    // Create the event manager and test controller
     CPPUNIT_NS::TestResult controller;
+
     // Add a listener that colllects test result
     CPPUNIT_NS::TestResultCollector result;
     controller.addListener( &result );
 
-    // add tests
-    suite.addTest( config_extractorTest::suite() );
+    // SETUP XML WRITE RESULTS
+    std::ofstream outputFile("testResults.xml");
+    CPPUNIT_NS::XmlOutputter* outputter = new CppUnit::XmlOutputter( &result,
+            outputFile );
+    MyXmlOutputterHook hook("NavLaser3 - config_extractor", "J. Costa");
+    outputter->addHook(&hook);
 
-    // run tests
+    // ADD AND RUN TESTS
+    suite.addTest( config_extractorTest::suite() );
     suite.run(&controller);
 
-    // Print test in a compiler compatible format.
-    CPPUNIT_NS::CompilerOutputter outputter( &result, CPPUNIT_NS::stdCOut() );
-    outputter.write();
+    // WRITE RESULTS
+    outputter->write();
+    outputFile.close();
 
     if ( result.wasSuccessful() == true ) {
         printf ("Test passed\n");
