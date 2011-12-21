@@ -8,6 +8,8 @@
 #ifndef CONFIG_EXTRACTOR_H_
 #define CONFIG_EXTRACTOR_H_
 
+#include "gtest/gtest_prod.h"
+
 #define LINEENDPOINTFIT 0
 #define LINELEASTSQUAREMETHOD 1
 #define LINESIMPLEREGRESSION 2
@@ -21,6 +23,7 @@
 class config_extractor
 {
 protected:
+    FRIEND_TEST(config_extractorTest, setCornerEstimationMethodReturnBool);
     int MIN_LINE_POINTS; // minimum points a line can contain to be valid
     double RANSAC_FACTOR;
     double ADPTLAMBDA;
@@ -38,7 +41,7 @@ protected:
     bool setCornerEstimationMethod ( int method, double optional );
     bool setMinDistanceBtwLines ( double distance );
     bool setMinLinePoints (int value);
-
+    
 public:
 	config_extractor();
 	virtual ~config_extractor();
