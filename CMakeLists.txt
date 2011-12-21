@@ -139,8 +139,6 @@ ADD_EXECUTABLE(navlaserplayer ${NAVLASER3_SRC} )
 
 TARGET_LINK_LIBRARIES(navlaserplayer  ${NAVLASER3_LINK_LIBS})
 
-
-
 #####################################
 #### unit test specific
 #### definition of test environment
@@ -164,6 +162,8 @@ ADD_EXECUTABLE(navlaser3-config-tests ${NAVLASER3_CONFIG_TESTS_SRC})
 TARGET_LINK_LIBRARIES(navlaser3-config-tests    ${NAVLASER3_LINK_LIBS}
                                                 ${CPPUNIT_LIBRARIES} )
 
+message (STATUS "CURRENT link libraries: ${NAVLASER3_LINK_LIBS}")
+
 #####################################
 # CTEST ENABLED
 ENABLE_TESTING()
@@ -175,3 +175,33 @@ SET_TESTS_PROPERTIES(test_config_tests PROPERTIES PASS_REGULAR_EXPRESSION "Test 
 ADD_TEST(test_config_tests_1 "navlaser3-config-tests")
 SET_TESTS_PROPERTIES(test_config_tests PROPERTIES FAIL_REGULAR_EXPRESSION "ERROR;FAIL;Test failed")
 SET_TESTS_PROPERTIES(test_config_tests PROPERTIES PASS_REGULAR_EXPRESSION "Test passed")
+
+
+#####################################
+#### google test specific
+#### definition of test environment
+####
+
+MESSAGE (STATUS "\n\n====== Finding Google Test Framework ======")
+INCLUDE (${navlaserplayer_cmake_dir}/internal_utils.cmake)
+MESSAGE (STATUS "----------------------------------------\n")
+
+### define gtest libraries, this will be defined in project
+set(GTEST_LINK_LIBS gtest gtest_main)
+
+### define include path for gtest
+
+### define SRC files for proect specific unit tests
+set(NAVLASER3_CONFIG_GTESTS_SRC ${PROJECT_SOURCE_DIR}/gtest/config/config_extractorGTest.cpp
+      ${PROJECT_SOURCE_DIR}/src/config/config_extractor.cpp
+      ${PROJECT_SOURCE_DIR}/gtest/config/main.cpp )
+
+### define targets for gtest
+ADD_EXECUTABLE(navlaser3-config-gtests ${NAVLASER3_CONFIG_GTESTS_SRC}) 
+
+### define link libraries targets for gtest
+TARGET_LINK_LIBRARIES(navlaser3-config-gtests ${GTEST_LINK_LIBS} ${NAVLASER3_LINK_LIBS} )
+
+#####################################
+# CTEST DEFINITIONS FOR GTEST
+ADD_TEST(test_config_tests_2 "navlaser3-config-gtests")
