@@ -24,6 +24,7 @@ class config_extractor
 {
 protected:
     FRIEND_TEST(config_extractorTest, setCornerEstimationMethodReturnBool);
+    FRIEND_TEST(config_extractorTest, setLineEstimationMethodReturnBool);
     int MIN_LINE_POINTS; // minimum points a line can contain to be valid
     double RANSAC_FACTOR;
     double ADPTLAMBDA;

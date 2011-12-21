@@ -54,3 +54,11 @@ TEST(config_extractorTest, setCornerEstimationMethodReturnBool) {
   ASSERT_EQ(c.RANSAC_FACTOR,0.1);
 
 }
+TEST(config_extractorTest, setLineEstimationMethodReturnBool) {
+  config_extractor c;
+      
+  ASSERT_TRUE(c.setLineEstimationMethod(LINELEASTSQUAREMETHOD));
+  ASSERT_EQ(c.LineEstimationMethod,LINELEASTSQUAREMETHOD);
+  
+}
+
