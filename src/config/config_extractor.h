@@ -8,7 +8,10 @@
 #ifndef CONFIG_EXTRACTOR_H_
 #define CONFIG_EXTRACTOR_H_
 
+
+#ifdef UNIT_GTEST
 #include "gtest/gtest_prod.h"
+#endif
 
 #define LINEENDPOINTFIT 0
 #define LINELEASTSQUAREMETHOD 1
@@ -23,8 +26,10 @@
 class config_extractor
 {
 protected:
+	#ifdef UNIT_GTEST
     FRIEND_TEST(config_extractorTest, setCornerEstimationMethodReturnBool);
     FRIEND_TEST(config_extractorTest, setLineEstimationMethodReturnBool);
+	#endif
     int MIN_LINE_POINTS; // minimum points a line can contain to be valid
     double RANSAC_FACTOR;
     double ADPTLAMBDA;
