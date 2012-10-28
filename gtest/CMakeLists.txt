@@ -39,7 +39,7 @@ ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 ### define SRC files for proect specific unit tests
 set(NAVLASER3_CONFIG_GTESTS_SRC ${PROJECT_SOURCE_DIR}/config/config_extractorGTest.cpp
-      ${NAVLASER3_SRC}
+      ${NAVLASER3_SRC_TEST}
       ${PROJECT_SOURCE_DIR}/config/main.cpp )
 
 ### define targets for gtest

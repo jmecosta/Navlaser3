@@ -12,6 +12,7 @@ ENDIF(COMMAND CMAKE_POLICY)
 
 MESSAGE (STATUS "NAVLASEREXEC: Project Source Dir:" ${PROJECT_SOURCE_DIR} )
 
+
 #### project specific stuff
 SET(PROJECT_INCLUDE_EXTERNALS 	${GAZEBOSERVER_INCLUDE_DIRS}
 								${PLAYER_INCLUDE_DIRS}
@@ -45,17 +46,17 @@ ADD_DEFINITIONS(${QT_DEFINITIONS})
 ##
 ## SET GUI - QT WRAPPER FOR UI objs
 ##
-SET(himlib_UIS ${PROJECT_ROOT_DIR}/src/hmi/nav3mainwindow.ui)
-QT4_WRAP_UI(himlib_UIS_H ${himlib_UIS})
+#SET(himlib_UIS ${PROJECT_ROOT_DIR}/src/hmi/nav3mainwindow.ui)
+#QT4_WRAP_UI(himlib_UIS_H ${himlib_UIS})
 
-set(Qtwindow_HDRS ${PROJECT_ROOT_DIR}/src/hmi/nav3mainwindow.h ${himlib_UIS_H})
-QT4_WRAP_CPP(MOC_OUTFILES ${Qtwindow_HDRS})
+#set(Qtwindow_HDRS ${PROJECT_ROOT_DIR}/src/hmi/nav3mainwindow.h ${himlib_UIS_H})
+#QT4_WRAP_CPP(MOC_OUTFILES ${Qtwindow_HDRS})
 
-set(SRCDIR ${PROJECT_ROOT_DIR}/src/hmi/nav3mainwindow.cpp 
+set(SRCDIRHMI ${PROJECT_ROOT_DIR}/src/hmi/nav3mainwindow.cpp 
 		   ${PROJECT_ROOT_DIR}/src/hmi/scene_manager.cpp ) 
 		   
 # SET Project sources
-set(HMI_SRC ${MOC_OUTFILES}  ${SRCDIR} )
+set(HMI_SRC ${MOC_OUTFILES}  ${SRCDIRHMI} )
 
 # SET Project sources
 set(CONFIGLIB_SRC  ${PROJECT_SOURCE_DIR}/config/config_extractor.cpp
@@ -98,7 +99,6 @@ LINK_DIRECTORIES(${GAZEBOSERVER_LINK_DIRS})
 LINK_DIRECTORIES(${GSL_LINK_DIRS})
 LINK_DIRECTORIES(${boost_library_dirs})
 LINK_DIRECTORIES(${GTK_LIBRARY_DIRS})
-LINK_DIRECTORIES(${CPPUNIT_LIBRARY_DIRS})
 LINK_DIRECTORIES(${OGRE_LIBRARY_DIRS})
 
 
@@ -111,6 +111,17 @@ set(NAVLASER3_SRC  ${CONFIGLIB_SRC}
 							  ${MATH_SRC}
 							  ${RTK2_SRC}
 							  ${SENSORS_SRC} CACHE INTERNAL "Sources for the project" FORCE)
+
+### sET project source files
+set(NAVLASER3_SRC_TEST  ${CONFIGLIB_SRC}
+							  ${CONTROL_SRC} 
+							  ${FEATURES_SRC}
+							  ${SRCDIRHMI}
+							  ${MAP_SRC}
+							  ${MATH_SRC}
+							  ${RTK2_SRC}
+							  ${SENSORS_SRC} CACHE INTERNAL "Sources for the project" FORCE)
+
 							                                       
 #  ${QTCORE_LINK_LIBS}
 ADD_EXECUTABLE(navlaserplayer main.cpp ${NAVLASER3_SRC} )

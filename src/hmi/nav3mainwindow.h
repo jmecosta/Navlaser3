@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "ui_nav3mainwindow.h"
+
 #include "scene_manager.h"
 
 namespace Ui {

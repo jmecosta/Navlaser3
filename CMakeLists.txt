@@ -17,9 +17,48 @@ set (navlaserplayer_cmake_dir ${PROJECT_SOURCE_DIR}/cmake CACHE PATH "Location o
 set (navlaserplayer_lib_dir ${PROJECT_SOURCE_DIR}/lib CACHE PATH "Location of CMake scripts")
 set (PROJECT_ROOT_DIR ${PROJECT_SOURCE_DIR} CACHE PATH "Root location of navlaser3")
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "thirdparty/share/cmake/Modules")
+
+
 MESSAGE (STATUS "\n\n====== Finding 3rd Party Packages ======")
 INCLUDE (${navlaserplayer_cmake_dir}/SearchForStuff.cmake)
 MESSAGE (STATUS "----------------------------------------\n")
+
+# set thirdparty stuff
+set(PLAYER_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/include/player-3.0 CACHE PATH "Includes to be used in projec")
+set(GTK_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/thirdparty 
+                     ${PROJECT_SOURCE_DIR}/thirdparty/include/gtk-2.0
+                     ${PROJECT_SOURCE_DIR}/thirdparty/include/gtk-2.0/gdk
+                     ${PROJECT_SOURCE_DIR}/thirdparty/include/gtk-2.0/gtk
+                     ${PROJECT_SOURCE_DIR}/thirdparty/glib
+                     ${PROJECT_SOURCE_DIR}/thirdparty/cairo
+                     ${PROJECT_SOURCE_DIR}/thirdparty/pango
+                     CACHE PATH "Includes to be used in projec")
+
+set(OGRE_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/ogre/include/OGRE
+                     CACHE PATH "Includes to be used in projec")
+
+
+
+# set libraries from third party
+set(PLAYERC++_LINK_LIBS -lplayerc++ -lplayerc -lz -lm   CACHE PATH "Libraries to be used in project")
+set(GTK_LIBRARIES -lgtk-x11-2.0 CACHE PATH "Libraries to be used in project")
+set(OGRE_LIBRARIES -lOgreMain  -lpthread  CACHE PATH "Libraries to be used in project")
+
+#set link directories
+set(PLAYER_LINK_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/lib 
+                     ${PROJECT_SOURCE_DIR}/thirdparty/lib64
+                     CACHE PATH "Includes to be used in project")
+
+set(GTK_LIBRARY_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/lib
+                     CACHE PATH "Includes to be used in project")
+
+#LINK_DIRECTORIES(${GAZEBOSERVER_LINK_DIRS})
+#LINK_DIRECTORIES(${GSL_LINK_DIRS})
+#LINK_DIRECTORIES(${boost_library_dirs})
+set(OGRE_LIBRARY_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/ogre/lib 
+                     CACHE PATH "Includes to be used in project")
+
 
 set(NAVLASER3_LINK_LIBS ${PLAYER_LINK_LIBS}
                         ${PLAYERC++_LINK_LIBS}
@@ -34,9 +73,6 @@ set(NAVLASER3_LINK_LIBS ${PLAYER_LINK_LIBS}
 
 # add sources for project
 ADD_SUBDIRECTORY(src)
-
-# set install prefix
-SET(CMAKE_INSTALL_PREFIX "/home/jorge/PLAYERSTAGE/")
 
 SET(CMAKE_CXX_LINK_FLAGS " -ldl" CACHE INTERNAL "Link flags for profile" FORCE)
 SET(CMAKE_C_FLAGS "-g -O0 -Wall")
@@ -71,7 +107,6 @@ IF(BUILD_TESTING)
 	#####################################
 
     ADD_SUBDIRECTORY(gtest)	
-    ADD_SUBDIRECTORY(test)
 
 
 ENDIF(BUILD_TESTING)
