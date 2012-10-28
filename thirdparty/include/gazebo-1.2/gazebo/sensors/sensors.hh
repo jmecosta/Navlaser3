@@ -1,0 +1,15 @@
+// Automatically generated
+ #include "sensors/Sensors.hh"
+ #include "sensors/Sensor.hh"
+ #include "sensors/SensorTypes.hh"
+ #include "sensors/SensorFactory.hh"
+ #include "sensors/SensorManager.hh"
+ #include "sensors/CameraSensor.hh"
+ #include "sensors/DepthCameraSensor.hh"
+ #include "sensors/RaySensor.hh"
+ #include "sensors/GpuRaySensor.hh"
+ #include "sensors/ContactSensor.hh"
+ #include "sensors/RFIDSensor.hh"
+ #include "sensors/RFIDTag.hh"
+ #include "sensors/RFIDTagManager.hh"
+

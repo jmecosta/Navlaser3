@@ -1,0 +1,10 @@
+prefix=/home/jmecosta/gazebo
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: gazebo
+Description: Gazebo Exported ODE Libraries
+Version: 1.2.5
+Requires:
+Libs: -Wl,-rpath,${libdir},-rpath,${prefix}/lib -L${prefix}/lib -lgazebo_ode
+CFlags: -I${includedir}/gazebo-1.2/gazebo

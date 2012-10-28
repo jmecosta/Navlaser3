@@ -1,0 +1,10 @@
+prefix=/home/jmecosta/gazebo
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: gazebo_transport
+Description: Gazebo Transport Library
+Version: 1.2.5
+Requires:
+Libs: -Wl,-rpath,${libdir} -L${libdir} -lgazebo_transport  -lgazebo_msgs 
+CFlags: -I${includedir}/gazebo-1.2/gazebo

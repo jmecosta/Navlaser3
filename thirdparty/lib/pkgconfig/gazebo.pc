@@ -1,0 +1,10 @@
+prefix=/home/jmecosta/gazebo
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: gazebo
+Description: Gazebo Libraries
+Version: 1.2.5
+Requires:
+Libs: -Wl,-rpath,${libdir},-rpath,${prefix}/lib/gazebo-1.2/plugins -L${libdir} -L${prefix}/lib/gazebo-1.2/plugins -lgazebo_transport -lgazebo_physics -lgazebo_sensors -lgazebo_rendering -lgazebo_sdf_interface -lgazebo_msgs -lgazebo_math -lgazebo_common
+CFlags: -I${includedir}/gazebo-1.2 -I${includedir}/gazebo-1.2/gazebo
