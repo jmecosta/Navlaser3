@@ -82,6 +82,18 @@ SET(CMAKE_CXX_FLAGS "-g -O0 -Wall")
 INCLUDE(CTest)
 IF(BUILD_TESTING)
 
+    #set test directories
+    set(GTEST_INCLUDES ${PROJECT_SOURCE_DIR}/thirdparty/include
+                     CACHE PATH "Includes to be used in project")
+
+    set(GTEST_LINK_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/lib
+                     CACHE PATH "Includes to be used in project")
+
+    set(GTEST_LIBS ${PROJECT_SOURCE_DIR}/thirdparty/lib/libgtest.a
+                   ${PROJECT_SOURCE_DIR}/thirdparty/lib/libgmock.a
+                     CACHE PATH "Includes to be used in project")
+
+
 	IF(BUILD_WITH_COVERAGE)
 	    ADD_CUSTOM_COMMAND(TARGET helloworld PRE_BUILD
         	COMMAND ${CMAKE_SOURCE_DIR}/../scripts/test4ccache ${CMAKE_C_COMPILER}

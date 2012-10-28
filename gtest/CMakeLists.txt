@@ -23,10 +23,7 @@ INCLUDE (${navlaserplayer_cmake_dir}/internal_utils.cmake)
 MESSAGE (STATUS "----------------------------------------\n")
 MESSAGE (STATUS "---------------------dourrr-------------------\n ${NAVLASER3_SRC}\n")
 
-### define gtest libraries, this will be defined in project
-set(GTEST_LINK_LIBS gtest gtest_main)
-
-INCLUDE_DIRECTORIES(${PROJECT_INCLUDE_DIRS} ${PROJECT_INCLUDE_EXTERNALS})
+INCLUDE_DIRECTORIES(${PROJECT_INCLUDE_DIRS} ${PROJECT_INCLUDE_EXTERNALS} ${GTEST_INCLUDES})
 
 FIND_PACKAGE(Qt4 REQUIRED) 
 
@@ -37,6 +34,14 @@ include(${QT_USE_FILE})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 
+LINK_DIRECTORIES(${GTEST_LINK_DIRS})
+LINK_DIRECTORIES(${PLAYER_LINK_DIRS})
+LINK_DIRECTORIES(${GAZEBOSERVER_LINK_DIRS})
+LINK_DIRECTORIES(${GSL_LINK_DIRS})
+LINK_DIRECTORIES(${boost_library_dirs})
+LINK_DIRECTORIES(${GTK_LIBRARY_DIRS})
+LINK_DIRECTORIES(${OGRE_LIBRARY_DIRS})
+
 ### define SRC files for proect specific unit tests
 set(NAVLASER3_CONFIG_GTESTS_SRC ${PROJECT_SOURCE_DIR}/config/config_extractorGTest.cpp
       ${NAVLASER3_SRC_TEST}
@@ -46,7 +51,7 @@ set(NAVLASER3_CONFIG_GTESTS_SRC ${PROJECT_SOURCE_DIR}/config/config_extractorGTe
 ADD_EXECUTABLE(navlaser3-config-gtests ${NAVLASER3_CONFIG_GTESTS_SRC}) 
                         
 ### define link libraries targets for gtest
-TARGET_LINK_LIBRARIES(navlaser3-config-gtests ${GTEST_LINK_LIBS} ${NAVLASER3_LINK_LIBS} )
+TARGET_LINK_LIBRARIES(navlaser3-config-gtests ${GTEST_LIBS} ${NAVLASER3_LINK_LIBS} )
 
 ### set preprocessor flags
 SET_TARGET_PROPERTIES(navlaser3-config-gtests PROPERTIES COMPILE_DEFINITIONS "UNIT_GTEST=1")
