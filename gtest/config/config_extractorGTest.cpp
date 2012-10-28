@@ -51,7 +51,7 @@ TEST(config_extractorTest, setCornerEstimationMethodReturnBool) {
       
   ASSERT_TRUE(c.setCornerEstimationMethod(CORNERRAMSAC,0.1));
   ASSERT_EQ(c.CornerEstimationMethod,CORNERRAMSAC);
-  ASSERT_EQ(c.RANSAC_FACTOR,0.1);
+  ASSERT_EQ(c.RANSAC_FACTOR,0.2);
 
 }
 TEST(config_extractorTest, setLineEstimationMethodReturnBool) {

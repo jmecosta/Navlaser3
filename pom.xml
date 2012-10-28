@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.jmecosta</groupId>
+  <packaging>pom</packaging>
+  
+  <artifactId>Navlaser3</artifactId>
+  <name>Navlaser3</name>
+  <version>work</version>
+  <url>https://github.com/jmecosta/Navlaser3</url>
+
+  <scm>    
+    <connection>https://github.com/jmecosta/Navlaser3.git</connection>
+    <url>https://github.com/jmecosta/Navlaser3</url>  
+  </scm>
+
+	<properties>
+	  <sonar.language>c++</sonar.language>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.cxx.cppcheck.reportPath>.sonar/reports-cppcheck/cppcheck-result-*.xml</sonar.cxx.cppcheck.reportPath>		
+		<sonar.cxx.customrules.reportPath>.sonar/reports-cpplint/cpplint-result-*.xml</sonar.cxx.customrules.reportPath>
+		<sonar.cxx.rats.reportPath>.sonar/reports-rats/rats-result-*.xml</sonar.cxx.rats.reportPath>
+		<sonar.cxx.vera.reportPath>.sonar/reports-vera++/vera++-result-*.xml</sonar.cxx.vera.reportPath>
+		<sonar.cxx.xunit.reportPath>.sonar/reports-xunit/xunit-result-*.xml</sonar.cxx.xunit.reportPath>		
+		<sonar.cxx.bulleyescoverage.reportPath>.sonar/reports-bullseye/bullseyecoverage-result-*.xml</sonar.cxx.bulleyescoverage.reportPath>
+		<sonar.cxx.bulleyescoverage.itReportPath>.sonar/reports-it-bullseye/bullseyecoverage-result-*.xml</sonar.cxx.bulleyescoverage.itReportPath> 
+		<sonar.cxx.bulleyescoverage.calcomplexity>true</sonar.cxx.bulleyescoverage.calcomplexity>			
+		<sonar.host.url>http://localhost:9000</sonar.host.url>
+	</properties>
+  
+	<build>
+	  <sourceDirectory> . </sourceDirectory>
+	</build>  
+</project>
+

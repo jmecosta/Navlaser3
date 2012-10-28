@@ -51,6 +51,7 @@ bool config_extractor::setCornerEstimationMethod(int method,
 }
 bool config_extractor::setMinDistanceBtwLines(double distance)
 {
+	int x;
 	MIN_DIST_BTW_LINES = distance;
 	return true;
 }

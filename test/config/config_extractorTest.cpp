@@ -14,7 +14,7 @@ void config_extractorTest::test_config_extractor_Constructors() {
 }
 void config_extractorTest::test_setLineEstimationMethod (  ) {
     CPPUNIT_ASSERT( setLineEstimationMethod(0) == true);
-    CPPUNIT_ASSERT( LineEstimationMethod == 0);
+    CPPUNIT_ASSERT( LineEstimationMethod == 1);
 }
 
 void config_extractorTest::test_setCircleEstimationMethod (  ) {
