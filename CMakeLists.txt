@@ -38,6 +38,10 @@ set(GTK_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/thirdparty
 set(OGRE_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/ogre/include/OGRE
                      CACHE PATH "Includes to be used in projec")
 
+set (GSL_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/include CACHE INTERNAL "gsl include directory")
+set (GSL_LINK_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/lib CACHE INTERNAL "gsl link directory")
+set (GSL_LINK_LIBS -lgsl -lgslcblas CACHE INTERNAL "gsl libraries")
+
 
 
 # set libraries from third party

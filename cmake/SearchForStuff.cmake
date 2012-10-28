@@ -10,19 +10,6 @@ include (FindPkgConfig)
 # Find packages
 if (PKG_CONFIG_FOUND)
 
-  # find GSL
-  pkg_check_modules(GSL REQUIRED gsl>=0.10.0)
-  if (NOT GSL_FOUND)
-    set (INCLUDE_GSL OFF CACHE BOOL "Set Playerc++ Libs" FORCE)
-    message (STATUS "Warning: Playerc++ not found. ${navlaserplayer} will not be built. See the following website: http://www.gnu.org/software/gsl")
-  else (NOT GSL_FOUND)
-    set (INCLUDE_GSL ON CACHE BOOL "Set gsl Libs" FORCE)
-    set (GSL_INCLUDE_DIRS ${GSL_INCLUDE_DIRS} CACHE INTERNAL "gsl include directory")
-    set (GSL_LINK_DIRS ${GSL_LIBRARY_DIRS} CACHE INTERNAL "gsl link directory")
-    set (GSL_LINK_LIBS ${GSL_LIBRARIES} CACHE INTERNAL "gsl libraries")
-    MESSAGE (STATUS "GSL FOUND")
-  endif (NOT GSL_FOUND)  
-
 
   message("GTK INCLUDE DIRS: " ${GTK_INCLUDE_DIRS} )
   message("GTK PKG LIB DIR: " ${GTK_LIBRARY_DIRS} )
