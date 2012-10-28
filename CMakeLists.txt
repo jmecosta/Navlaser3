@@ -42,6 +42,10 @@ set (GSL_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/include CACHE INTERNAL "g
 set (GSL_LINK_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/lib CACHE INTERNAL "gsl link directory")
 set (GSL_LINK_LIBS -lgsl -lgslcblas CACHE INTERNAL "gsl libraries")
 
+SET (Boost_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/include CACHE INTERNAL "boost libraries")
+SET (boost_library_dirs ${PROJECT_SOURCE_DIR}/thirdparty/lib CACHE INTERNAL "boost libraries")
+SET (boost_libraries -lboost_thread CACHE INTERNAL "boost libraries")
+
 
 
 # set libraries from third party
