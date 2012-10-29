@@ -632,6 +632,10 @@ MESSAGE (STATUS "\n\n====== QT_QTCORE_LIBRARY_RELEASE ddd: ${QT_QTCORE_LIBRARY_R
   # ask qmake for the include dir
   IF (QT_LIBRARY_DIR AND (NOT QT_QTCORE_INCLUDE_DIR OR NOT QT_HEADERS_DIR OR  QT_QMAKE_CHANGED))
       _qt4_query_qmake(QT_INSTALL_HEADERS qt_headers)
+
+      set(qt_headers ${PROJECT_SOURCE_DIR}/thirdparty/include/qt4 )
+MESSAGE (STATUS "\n\n====== qt headers: ${qt_headers} ======")
+
       SET(QT_QTCORE_INCLUDE_DIR NOTFOUND)
       FIND_PATH(QT_QTCORE_INCLUDE_DIR QtCore
                 HINTS ${qt_headers} ${QT_LIBRARY_DIR}
