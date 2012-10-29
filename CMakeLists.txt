@@ -17,11 +17,13 @@ set (navlaserplayer_cmake_dir ${PROJECT_SOURCE_DIR}/cmake CACHE PATH "Location o
 set (navlaserplayer_lib_dir ${PROJECT_SOURCE_DIR}/lib CACHE PATH "Location of CMake scripts")
 set (PROJECT_ROOT_DIR ${PROJECT_SOURCE_DIR} CACHE PATH "Root location of navlaser3")
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "thirdparty/share/cmake/Modules")
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/thirdparty/share/cmake/Modules CACHE PATH "module path")
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/thirdparty/share/cmake-2.8/Modules CACHE PATH "module path")
 
 
 MESSAGE (STATUS "\n\n====== Finding 3rd Party Packages ======")
 INCLUDE (${navlaserplayer_cmake_dir}/SearchForStuff.cmake)
+
 MESSAGE (STATUS "----------------------------------------\n")
 
 # set thirdparty stuff
@@ -46,6 +48,14 @@ SET (Boost_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/thirdparty/include CACHE INTERNAL 
 SET (boost_library_dirs ${PROJECT_SOURCE_DIR}/thirdparty/lib CACHE INTERNAL "boost libraries")
 SET (boost_libraries -lboost_thread CACHE INTERNAL "boost libraries")
 
+SET (QT_QTCORE_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/thirdparty/include/qt4 
+                           ${PROJECT_SOURCE_DIR}/thirdparty/include/qt4/Qt
+                           ${PROJECT_SOURCE_DIR}/thirdparty/include/qt4/QtOpenGL
+                           ${PROJECT_SOURCE_DIR}/thirdparty/include/qt4/QtGui
+    CACHE INTERNAL "qt libraries")
+
+SET(QT_QTCORE_dirs ${PROJECT_SOURCE_DIR}/thirdparty/lib CACHE INTERNAL "qt libraries")
+SET(QT_LIBRARIES -lQtCore -lQtOpenGL -lQtGui CACHE INTERNAL "qt libraries")
 
 
 # set libraries from third party
@@ -82,9 +92,9 @@ set(NAVLASER3_LINK_LIBS ${PLAYER_LINK_LIBS}
 # add sources for project
 ADD_SUBDIRECTORY(src)
 
-SET(CMAKE_CXX_LINK_FLAGS " -ldl" CACHE INTERNAL "Link flags for profile" FORCE)
-SET(CMAKE_C_FLAGS "-g -O0 -Wall")
-SET(CMAKE_CXX_FLAGS "-g -O0 -Wall")
+#SET(CMAKE_CXX_LINK_FLAGS " -ldl" CACHE INTERNAL "Link flags for profile" FORCE)
+#SET(CMAKE_C_FLAGS "-g -O0 -Wall" CACHE INTERNAL "Link flags for profile" FORCE)
+#SET(CMAKE_CXX_FLAGS "-DQT_NO_DEBUG -DQT_GUI_LIB -DQT_CORE_LIB" CACHE INTERNAL "Link flags for profile" FORCE)
 
 # Unit Test
 INCLUDE(CTest)

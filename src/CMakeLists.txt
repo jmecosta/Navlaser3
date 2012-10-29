@@ -35,12 +35,20 @@ SET(PROJECT_INCLUDE_DIRS 	${PROJECT_SOURCE_DIR}/
 
 INCLUDE_DIRECTORIES(${PROJECT_INCLUDE_DIRS} ${PROJECT_INCLUDE_EXTERNALS})
 
-FIND_PACKAGE(Qt4 REQUIRED) 
+# Set hardcoded path guesses for various platforms
+MESSAGE (STATUS "\n\n====== FIND QT ====== " )
+
+INCLUDE (${PROJECT_ROOT_DIR}/thirdparty/share/cmake-2.8/Modules/FindQt4.cmake)
+
+#FIND_PACKAGE(Qt4 REQUIRED) 
 
 set(QT_USE_OPENGL TRUE)
 set(QT_USE_QTCORE TRUE)
 set(CMAKE_AUTOMOC TRUE)
-include(${QT_USE_FILE})
+
+MESSAGE (STATUS "\n\n====== QTUSEFILE" ${QT_USE_FILE})
+INCLUDE (${PROJECT_ROOT_DIR}/thirdparty/share/cmake-2.8/Modules/UseQt4.cmake)
+
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 ##
