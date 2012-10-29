@@ -549,7 +549,7 @@ IF (QT_QMAKE_EXECUTABLE AND QTVERSION)
 
 
     _qt4_query_qmake(QT_INSTALL_LIBS QT_LIBRARY_DIR_TMP)
-set (QT_LIBRARY_DIR_TMP ${PROJECT_SOURCE_DIR}/thirdparty/lib CACHE PATH "libs")
+set (QT_LIBRARY_DIR_TMP ${PROJECT_SOURCE_DIR}/../thirdparty/lib CACHE PATH "libs")
 
 MESSAGE (STATUS "\n\n====== QT_LIBRARY_DIR_TMP: ${QT_LIBRARY_DIR_TMP} ======")
 MESSAGE (STATUS "\n\n====== QT_INSTALL_LIBS: ${QT_INSTALL_LIBS} ======")
@@ -589,7 +589,7 @@ MESSAGE (STATUS "\n\n====== QT_INSTALL_LIBS: ${QT_INSTALL_LIBS} ======")
 
   ENDIF ()
 
-set (QT_QTCORE_LIBRARY_RELEASE ${PROJECT_SOURCE_DIR}/thirdparty/lib/libQtCore.so)
+set (QT_QTCORE_LIBRARY_RELEASE ${PROJECT_SOURCE_DIR}/../thirdparty/lib/libQtCore.so)
 MESSAGE (STATUS "\n\n====== QT_QTCORE_LIBRARY_RELEASE ddd: ${QT_QTCORE_LIBRARY_RELEASE} ======")
 
     MESSAGE (STATUS "\n\n====== QT_QTCORE_LIBRARY_DEBUG: ${QT_QTCORE_LIBRARY_DEBUG} ======")
@@ -615,6 +615,9 @@ MESSAGE (STATUS "\n\n====== QT_QTCORE_LIBRARY_RELEASE ddd: ${QT_QTCORE_LIBRARY_R
   # ask qmake for the binary dir
   IF (NOT QT_BINARY_DIR  OR  QT_QMAKE_CHANGED)
     _qt4_query_qmake(QT_INSTALL_BINS qt_bins)
+
+    SET(qt_bins ${PROJECT_SOURCE_DIR}/../thirdparty/bin)
+
     SET(QT_BINARY_DIR ${qt_bins} CACHE INTERNAL "" FORCE)
   ENDIF (NOT QT_BINARY_DIR  OR  QT_QMAKE_CHANGED)
 
@@ -633,7 +636,7 @@ MESSAGE (STATUS "\n\n====== QT_QTCORE_LIBRARY_RELEASE ddd: ${QT_QTCORE_LIBRARY_R
   IF (QT_LIBRARY_DIR AND (NOT QT_QTCORE_INCLUDE_DIR OR NOT QT_HEADERS_DIR OR  QT_QMAKE_CHANGED))
       _qt4_query_qmake(QT_INSTALL_HEADERS qt_headers)
 
-      set(qt_headers ${PROJECT_SOURCE_DIR}/thirdparty/include/qt4 )
+      set(qt_headers ${PROJECT_SOURCE_DIR}/../thirdparty/include/qt4 )
 MESSAGE (STATUS "\n\n====== qt headers: ${qt_headers} ======")
 
       SET(QT_QTCORE_INCLUDE_DIR NOTFOUND)
@@ -965,11 +968,15 @@ MESSAGE (STATUS "\n\n====== qt headers: ${qt_headers} ======")
     SET(QT_LINGUIST_EXECUTABLE NOTFOUND)
   ENDIF(QT_QMAKE_CHANGED)
   
+    MESSAGE (STATUS "\n\n====== QT_BINARY_DIR: ${QT_BINARY_DIR} ======")
+
   FIND_PROGRAM(QT_MOC_EXECUTABLE
     NAMES moc-qt4 moc
     PATHS ${QT_BINARY_DIR}
     NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH
     )
+
+    MESSAGE (STATUS "\n\n====== QT_MOC_EXECUTABLE: ${QT_MOC_EXECUTABLE} ======")
 
   FIND_PROGRAM(QT_UIC_EXECUTABLE
     NAMES uic-qt4 uic
