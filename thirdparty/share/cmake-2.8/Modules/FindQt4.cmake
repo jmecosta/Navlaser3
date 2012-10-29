@@ -579,6 +579,7 @@ MESSAGE (STATUS "\n\n====== QT_INSTALL_LIBS: ${QT_INSTALL_LIBS} ======")
           )
     ENDIF(NOT QT_QTCORE_LIBRARY_RELEASE AND NOT QT_QTCORE_LIBRARY_DEBUG)
 
+
     # try dropping a hint if trying to use Visual Studio with Qt built by mingw
     IF(NOT QT_QTCORE_LIBRARY_RELEASE AND MSVC)
       IF(EXISTS ${QT_LIBRARY_DIR_TMP}/libqtmain.a)
@@ -587,6 +588,12 @@ MESSAGE (STATUS "\n\n====== QT_INSTALL_LIBS: ${QT_INSTALL_LIBS} ======")
     ENDIF(NOT QT_QTCORE_LIBRARY_RELEASE AND MSVC)
 
   ENDIF ()
+
+set (QT_QTCORE_LIBRARY_RELEASE ${PROJECT_SOURCE_DIR}/thirdparty/lib/libQtCore.so)
+MESSAGE (STATUS "\n\n====== QT_QTCORE_LIBRARY_RELEASE ddd: ${QT_QTCORE_LIBRARY_RELEASE} ======")
+
+    MESSAGE (STATUS "\n\n====== QT_QTCORE_LIBRARY_DEBUG: ${QT_QTCORE_LIBRARY_DEBUG} ======")
+
 
   # set QT_LIBRARY_DIR based on location of QtCore found.
   IF(QT_QTCORE_LIBRARY_RELEASE)
