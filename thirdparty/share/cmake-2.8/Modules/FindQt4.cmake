@@ -546,7 +546,15 @@ IF (QT_QMAKE_EXECUTABLE AND QTVERSION)
   # ask qmake for the library dir as a hint, then search for QtCore library and use that as a reference for finding the
   # others and for setting QT_LIBRARY_DIR
   IF (NOT (QT_QTCORE_LIBRARY_RELEASE OR QT_QTCORE_LIBRARY_DEBUG)  OR QT_QMAKE_CHANGED)
+
+
     _qt4_query_qmake(QT_INSTALL_LIBS QT_LIBRARY_DIR_TMP)
+set (QT_LIBRARY_DIR_TMP ${PROJECT_SOURCE_DIR}/thirdparty/lib CACHE PATH "libs")
+
+MESSAGE (STATUS "\n\n====== QT_LIBRARY_DIR_TMP: ${QT_LIBRARY_DIR_TMP} ======")
+MESSAGE (STATUS "\n\n====== QT_INSTALL_LIBS: ${QT_INSTALL_LIBS} ======")
+
+
     SET(QT_QTCORE_LIBRARY_RELEASE NOTFOUND)
     SET(QT_QTCORE_LIBRARY_DEBUG NOTFOUND)
     FIND_LIBRARY(QT_QTCORE_LIBRARY_RELEASE
